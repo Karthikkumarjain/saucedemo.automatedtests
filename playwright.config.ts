@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 import { config } from 'dotenv'
 
-switch (process.env.ENVIRONMENT) {
+switch (process.env.ENV) {
   case 'qa':
     config({ path: '.env.qa' })
     break;
