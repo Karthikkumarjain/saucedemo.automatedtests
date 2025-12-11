@@ -1,4 +1,4 @@
-# Saucedemo Automation Project (Playwright – UI + API)
+# Saucedemo Automation Project 
 
 This repository contains automated **UI and API tests** for the sample e-commerce application **[Saucedemo](https://www.saucedemo.com/)** using **Microsoft Playwright**.  
 The project demonstrates modern testing practices using Page Object Model, fixtures, environment configs, and CI capability.

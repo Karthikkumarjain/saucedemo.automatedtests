@@ -1,0 +1,23 @@
+{
+  "name": "sauce_demo",
+  "version": "1.0.0",
+  "description": "This repository contains automated **UI and API tests** for the sample e-commerce application **[Saucedemo](https://www.saucedemo.com/)** using **Microsoft Playwright**.  \r The project demonstrates modern testing practices using Page Object Model, fixtures, environment configs, and CI capability.",
+  "main": "index.js",
+  "scripts": {
+    "debug": "cross-env ENV=qa npx playwright test --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Karthikkumarjain/saucedemo.automatedtests.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.2",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3"
+  }
+}
