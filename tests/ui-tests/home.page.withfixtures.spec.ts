@@ -10,7 +10,7 @@ test('Verify app logo text @UI', async ({ homePage ,loginPage}) => {
     expect(logoText).toBe('Swag Labs');
 });
 
-test.only('Verify backPack is added to the cart successfully @UI', async ({ homePage ,addtoCartPage,loginPage}) => {
+test('Verify backPack is added to the cart successfully @UI', async ({ homePage ,addtoCartPage,loginPage}) => {
    
 
     await loginPage.navigateToApplicationUrl();
