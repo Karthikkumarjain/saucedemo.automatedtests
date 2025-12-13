@@ -11,7 +11,7 @@ let bookingId: any;
 let tokenValue: string;
 
 
-test.only('Make a post call using dynamic json file and validate the response ', async ({ request }) => {
+test('Make a post call using dynamic json file and validate the response ', async ({ request }) => {
 
     const dynamicJson = manipulateJson(JSON.stringify(requestBody), "Avdhesh", "Kumar", "false")
     const response = await request.post('https://restful-booker.herokuapp.com/booking', {
@@ -37,7 +37,7 @@ test.only('Make a post call using dynamic json file and validate the response ',
 
 })
 
-test.only('Get the token and make a put/update call', async ({ request }) => {
+test('Get the token and make a put/update call', async ({ request }) => {
 
 
     const response = await request.post('https://restful-booker.herokuapp.com/auth', {
@@ -51,7 +51,7 @@ test.only('Get the token and make a put/update call', async ({ request }) => {
     expect(response.status()).toBe(200);
 });
 
-test.only('Delete booking id', async ({ request }) => {
+test('Delete booking id', async ({ request }) => {
 
   const response = await request.delete(`https://restful-booker.herokuapp.com/booking/${bookingId}`,
         {
