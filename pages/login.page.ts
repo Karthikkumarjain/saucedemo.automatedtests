@@ -1,19 +1,19 @@
-import{Page,Locator} from "@playwright/test"
+import { Page, Locator } from "@playwright/test"
 
 
-    const base_url = process.env.BASE_URL as string
+const base_url = process.env.BASE_URL as string
 
-export class LoginPage{
+export class LoginPage {
 
 
-    private readonly page:Page;
+    private readonly page: Page;
 
-    constructor(page:Page){
+    constructor(page: Page) {
 
-        this.page =page;
+        this.page = page;
     }
 
-    async navigateToApplicationUrl(){
+    async navigateToApplicationUrl() {
 
         await this.page.goto(base_url);
 

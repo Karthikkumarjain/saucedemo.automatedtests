@@ -34,4 +34,3 @@ npm install
 ```bash
 npx playwright install
 ```
-

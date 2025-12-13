@@ -36,6 +36,7 @@ export const test = base.extend<TestObjects>({
     })
     await use(page);
     //tearDown
+    console.log("The test execution is now over")
   }, { auto: true }],
   timeLogger: [async ({ }, use) => {
     test.info().annotations.push({
@@ -52,7 +53,7 @@ export const test = base.extend<TestObjects>({
     })
 
 
-  }, { auto: true }],
+  }, { auto: true }],//to call this fixture when you want it to run everytime and you dont want to call this in you sepec file
 
 
 });

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test"
 import { HomePage } from "../../pages/home.page"
+import { LoginPage } from "../../pages/login.page";
 
 
 
@@ -12,9 +13,9 @@ test.info().annotations.push({
 
 });
 test('Verify app logo text @UI', async ({ page }) => {
+   // const loginPage= new LoginPage(page);
     const homePage = new HomePage(page);
     const BASE_URL = process.env.BASE_URL as string;
-
     await page.goto(BASE_URL);
     await page.waitForTimeout(6000);
     const logoText = await homePage.getAppLogoText();

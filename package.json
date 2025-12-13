@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "debug": "cross-env ENV=qa npx playwright test --debug",
-    "qa-test": "cross-env ENV=qa npx playwright test"
+    "debug-test": "cross-env ENV=test npx playwright test --debug",
+    "qa-test": "cross-env ENV=qa npx playwright test",
+    "test-run": "npx playwright test"
   },
   "repository": {
     "type": "git",
