@@ -1,76 +1,80 @@
-import { test, expect } from "@playwright/test"
-import requestBody from "../../test-data/dynamic-post-req.json"
+import { test, expect } from "@playwright/test";
+import requestBody from "../../test-data/dynamic-post-req.json";
 import { manipulateJson } from "../../utils/api-helper";
-import tokenRequestBody from "../../test-data/token-put.json"
-import putRequestBody from "../../test-data/put-payload-req.json"
-import patchRequestBody from "../../test-data/patch-req.json"
+import tokenRequestBody from "../../test-data/token-put.json";
 
-
-
-let bookingId: any;
+let bookingId: number;
 let tokenValue: string;
 
+test.describe.serial('Restful Booker DELETE flow', () => {
 
-test('Make a post call using dynamic json file and validate the response ', async ({ request }) => {
+  test('Create booking', async ({ request }) => {
 
-    const dynamicJson = manipulateJson(JSON.stringify(requestBody), "Avdhesh", "Kumar", "false")
-    const response = await request.post('https://restful-booker.herokuapp.com/booking', {
+    const dynamicJson = manipulateJson(
+      JSON.stringify(requestBody),
+      "Avdhesh",
+      "Kumar",
+      "false"
+    );
+
+    const response = await request.post(
+      'https://restful-booker.herokuapp.com/booking',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         data: JSON.parse(dynamicJson),
-
-
-    })
-    console.log(dynamicJson);
+      }
+    );
 
     const responseBody = await response.json();
     console.log(responseBody);
-    expect(response.ok()).toBeTruthy();
+
     expect(response.status()).toBe(200);
-    expect(responseBody.booking).toHaveProperty("firstname", "Avdhesh");
-    expect(responseBody.booking).toHaveProperty("lastname", "Kumar");
     bookingId = responseBody.bookingid;
+    expect(bookingId).toBeTruthy();
+  });
 
-    //VALIDATE NESTED JSON OBJECT
+  test('Get auth token', async ({ request }) => {
 
-    expect(responseBody.booking.bookingdates).toHaveProperty("checkin", "2018-01-01");
-    expect(responseBody.booking.bookingdates).toHaveProperty("checkout", "2019-01-01");
+    const response = await request.post(
+      'https://restful-booker.herokuapp.com/auth',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        data: tokenRequestBody,
+      }
+    );
 
-
-})
-
-test('Get the token and make a put/update call', async ({ request }) => {
-
-
-    const response = await request.post('https://restful-booker.herokuapp.com/auth', {
-        data: tokenRequestBody
-    });
     const responseBody = await response.json();
-    console.log(responseBody)
-    tokenValue = responseBody.token;
-    console.log(await response.json());
-    expect(response.ok()).toBeTruthy();
+    console.log(responseBody);
+
     expect(response.status()).toBe(200);
-});
+    tokenValue = responseBody.token;
+    expect(tokenValue).toBeTruthy();
+  });
 
-test('Delete booking id', async ({ request }) => {
+  test('Delete booking by id', async ({ request }) => {
 
-  const response = await request.delete(`https://restful-booker.herokuapp.com/booking/${bookingId}`,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${tokenValue}`
-            }
-          
+    expect(bookingId).toBeTruthy();
+    expect(tokenValue).toBeTruthy();
 
+    const response = await request.delete(
+      `https://restful-booker.herokuapp.com/booking/${bookingId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `token=${tokenValue}`,
+        },
+      }
+    );
 
-        }
-    )
-
- 
-    console.log(response);
-  expect(response.ok()).toBeTruthy();
     expect(response.status()).toBe(201);
-    expect(response.statusText()).toBe('Created')
+    expect(response.statusText()).toBe('Created');
+  });
 
-
-})
-
+});

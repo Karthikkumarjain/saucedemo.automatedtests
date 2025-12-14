@@ -6,6 +6,7 @@
  * @param args - Values to replace placeholders
  * @returns Formatted string
  */
+
 export const manipulateJson = (
   str: string,
   ...args: Array<string | number | boolean | null | undefined>

@@ -6,70 +6,86 @@ import putRequestBody from "../../test-data/put-payload-req.json"
 
 
 
-let bookingId: any;
+let bookingId: number;
 let tokenValue: string;
 
+test.describe.serial('Restful Booker API flow', () => {
 
-test('Make a post call using dynamic json file and validate the response ', async ({ request }) => {
+  test('Create booking', async ({ request }) => {
 
-    const dynamicJson = manipulateJson(JSON.stringify(requestBody), "Avdhesh", "Kumar", "false")
-    const response = await request.post('https://restful-booker.herokuapp.com/booking', {
+    const dynamicJson = manipulateJson(
+      JSON.stringify(requestBody),
+      "Avdhesh",
+      "Kumar",
+      "false"
+    );
+
+    const response = await request.post(
+      'https://restful-booker.herokuapp.com/booking',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         data: JSON.parse(dynamicJson),
-
-
-    })
-    console.log(dynamicJson);
+      }
+    );
 
     const responseBody = await response.json();
     console.log(responseBody);
-    expect(response.ok()).toBeTruthy();
+
     expect(response.status()).toBe(200);
-    expect(responseBody.booking).toHaveProperty("firstname", "Avdhesh");
-    expect(responseBody.booking).toHaveProperty("lastname", "Kumar");
+    expect(responseBody.booking.firstname).toBe("Avdhesh");
+    expect(responseBody.booking.lastname).toBe("Kumar");
+
     bookingId = responseBody.bookingid;
 
-    //VALIDATE NESTED JSON OBJECT
+    expect(responseBody.booking.bookingdates.checkin).toBe("2018-01-01");
+    expect(responseBody.booking.bookingdates.checkout).toBe("2019-01-01");
+  });
 
-    expect(responseBody.booking.bookingdates).toHaveProperty("checkin", "2018-01-01");
-    expect(responseBody.booking.bookingdates).toHaveProperty("checkout", "2019-01-01");
+  test('Get auth token', async ({ request }) => {
 
-
-})
-
-test('Get the token and make a put/update call', async ({ request }) => {
-
-
-    const response = await request.post('https://restful-booker.herokuapp.com/auth', {
-        data: tokenRequestBody
-    });
-    const responseBody = await response.json();
-    console.log(responseBody)
-    tokenValue = responseBody.token;
-    console.log(await response.json());
-    expect(response.ok()).toBeTruthy();
-    expect(response.status()).toBe(200);
-});
-
-test('Make a put call with the token', async ({ request }) => {
-
-  const response = await request.put(`https://restful-booker.herokuapp.com/booking/${bookingId}`,
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Cookie": `token=${tokenValue}`
-            },
-            data: putRequestBody
-
-
-        }
-    )
+    const response = await request.post(
+      'https://restful-booker.herokuapp.com/auth',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        data: tokenRequestBody,
+      }
+    );
 
     const responseBody = await response.json();
-
     console.log(responseBody);
-  expect(response.ok()).toBeTruthy();
+
     expect(response.status()).toBe(200);
+    tokenValue = responseBody.token;
+    expect(tokenValue).toBeTruthy();
+  });
 
+  test('Update booking using token', async ({ request }) => {
 
-})
+    expect(bookingId).toBeTruthy();
+    expect(tokenValue).toBeTruthy();
 
+    const response = await request.put(
+      `https://restful-booker.herokuapp.com/booking/${bookingId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Cookie': `token=${tokenValue}`,
+        },
+        data: putRequestBody,
+      }
+    );
+
+    const responseBody = await response.json();
+    console.log(responseBody);
+
+    expect(response.status()).toBe(200);
+  });
+
+});

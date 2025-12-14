@@ -6,6 +6,8 @@ import { manipulateJson } from "../../utils/api-helper";
 
 let bookingId: any;
 
+
+
 test('Make a post call using dynamic json file and validate the response ', async ({ request }) => {
 
     const dynamicJson = manipulateJson(JSON.stringify(requestBody), "Avdhesh", "Kumar", "false")
@@ -32,6 +34,8 @@ test('Make a post call using dynamic json file and validate the response ', asyn
 
 })
 
+
+//https://restful-booker.herokuapp.com/booking/?firstname-mercy&lastname=p - -?--denotes it accepts query params
 test('Get the booking details', async ({ request }) => {
     //https://restful-booker.herokuapp.com/booking?firstname=Avdhesh,lastname=Kumar
     const response = await request.get(`https://restful-booker.herokuapp.com/booking/`, {
